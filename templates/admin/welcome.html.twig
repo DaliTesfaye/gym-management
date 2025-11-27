@@ -1,0 +1,47 @@
+{# templates/admin/welcome.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome Admin{% endblock %}
+
+{% block body %}
+<style>
+    .welcome-container {
+        max-width: 700px;
+        margin: 100px auto;
+        text-align: center;
+        font-family: Arial, sans-serif;
+    }
+    .welcome-links {
+        margin-top: 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .welcome-links a {
+        display: inline-block;
+        text-decoration: none;
+        background: #007bff;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: background 0.2s ease;
+    }
+    .welcome-links a:hover {
+        background: #0056b3;
+    }
+</style>
+
+<div class="welcome-container">
+    <h1>Welcome, Admin!</h1>
+    <p>Use the links below to navigate to the different sections of the admin panel.</p>
+
+    <div class="welcome-links">
+
+        <a href="{{ path('admin_user_index') }}">Manage Users</a>
+        <a href="{{ path('admin_subscription_index') }}">Manage Subscriptions</a>
+        <a href="{{ path('admin_stats') }}">View Stats</a>
+        <a href="{{ path('app_logout') }}">Logout</a>
+    </div>
+</div>
+{% endblock %}

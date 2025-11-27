@@ -1,0 +1,129 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+
+    <h2 class="mb-4">Dashboard Statistics</h2>
+
+    <div class="row g-4">
+
+        <!-- Total Users -->
+        <div class="col-xl-3 col-md-6">
+            <div class="card stats-card card-hover-primary shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="text-muted text-uppercase fw-bold small">Total Users</div>
+                        <div class="stat-value text-primary">{{ totalUsers }}</div>
+                    </div>
+                    <div class="icon-circle"><i class="fas fa-users text-primary"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Subscriptions -->
+        <div class="col-xl-3 col-md-6">
+            <div class="card stats-card card-hover-success shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="text-muted text-uppercase fw-bold small">Total Subscriptions</div>
+                        <div class="stat-value text-success">{{ totalSubscriptions }}</div>
+                    </div>
+                    <div class="icon-circle"><i class="fas fa-credit-card text-success"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Subscriptions -->
+        <div class="col-xl-3 col-md-6">
+            <div class="card stats-card card-hover-info shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="text-muted text-uppercase fw-bold small">Active Subscriptions</div>
+                        <div class="stat-value text-info">{{ activeSubscriptions }}</div>
+                    </div>
+                    <div class="icon-circle"><i class="fas fa-check-circle text-info"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expired Subscriptions -->
+        <div class="col-xl-3 col-md-6">
+            <div class="card stats-card card-hover-warning shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="text-muted text-uppercase fw-bold small">Expired Subscriptions</div>
+                        <div class="stat-value text-warning">{{ expiredSubscriptions }}</div>
+                    </div>
+                    <div class="icon-circle"><i class="fas fa-times-circle text-warning"></i></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Analytics Chart Section -->
+    <div class="card mt-4" style="padding:20px;">
+        <h4 style="margin-bottom:12px;">📈 Subscriptions (Last 6 months)</h4>
+        <canvas id="monthlySubsChart" style="width:100%; max-height:300px;"></canvas>
+    </div>
+
+    {# Chart.js #}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        (function () {
+            const labels = {{ chartLabels|default([])|json_encode|raw }};
+            const totalData = {{ chartData|default([])|json_encode|raw }};
+            const activeData = {{ activeSubsChartData|default([])|json_encode|raw }};
+            const expiredData = {{ expiredSubsChartData|default([])|json_encode|raw }};
+
+            const ctx = document.getElementById('monthlySubsChart').getContext('2d');
+
+            if (window._monthlySubsChart instanceof Chart) {
+                window._monthlySubsChart.destroy();
+            }
+
+            window._monthlySubsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Total Subscriptions',
+                            data: totalData,
+                            backgroundColor: '#4e73df',
+                            borderRadius: 6,
+                            maxBarThickness: 30
+                        },
+                        {
+                            label: 'Active Subscriptions',
+                            data: activeData,
+                            backgroundColor: '#36b9cc',
+                            borderRadius: 6,
+                            maxBarThickness: 30
+                        },
+                        {
+                            label: 'Expired Subscriptions',
+                            data: expiredData,
+                            backgroundColor: '#f6c23e',
+                            borderRadius: 6,
+                            maxBarThickness: 30
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                    },
+                    plugins: {
+                        legend: { display: true },
+                        tooltip: { mode: 'index', intersect: false }
+                    }
+                }
+            });
+        })();
+    </script>
+
+{% endblock %}

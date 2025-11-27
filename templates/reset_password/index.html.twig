@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Forgot Password{% endblock %}
+
+{% block body %}
+
+<div class="mx-auto col-sm-4">
+    <div class="block-small">
+        <form method="post">
+            <h1 class="h3 mb-3 font-weight-normal">Reset Password</h1>
+            <label for="inputEmail">Adress Email</label>
+            <input type="email" name="email" id="inputEmail" placeholder="Your Adress Email" class="form-control mb-3" required autofocus>
+            <button class="btn btn-lg btn-info btn-block mt-3" type="submit">
+                Validate
+            </button>
+            <hr>
+            <p>Would you like  <a href="{{ path('app_login') }}"> to connect</a> ?</p>
+        </form>
+    </div>
+</div>
+{% endblock %}

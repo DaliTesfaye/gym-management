@@ -1,0 +1,37 @@
+# config/packages/security.yaml
+security:
+    # Password hashing
+    password_hashers:
+        App\Entity\Admin:
+            algorithm: auto
+
+    # User provider
+    providers:
+        admin_provider:
+            entity:
+                class: App\Entity\Admin
+                property: email
+
+    # Firewalls
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            lazy: true
+            provider: admin_provider
+            custom_authenticator: App\Security\LoginFormAuthenticator
+            logout:
+                path: app_logout
+                target: app_login
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+
+    # Access control
+    access_control:
+        - { path: ^/admin, roles: ROLE_ADMIN }
+
+

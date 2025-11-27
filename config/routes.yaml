@@ -2,4 +2,6 @@ controllers:
     resource:
         path: ../src/Controller/
         namespace: App\Controller
+        app_logout:
+            path: /logout
     type: attribute
